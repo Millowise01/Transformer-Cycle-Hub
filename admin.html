@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-lang-key="admin_login_title">Admin Login - Transformer Cycle Hub</title>
+  <link rel="stylesheet" href="styles.css" />
+<style>
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+</style>
+      <label for="language-switcher" class="visually-hidden">Language Switcher</label>
+      <select id="language-switcher" aria-label="Language Switcher">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="sw">Kiswahili</option>
+      </select>
+    <nav>
+      <a href="index.html" data-lang-key="nav_home">Home</a>
+      <a href="login.html" data-lang-key="nav_login">Login</a>
+      <a href="register.html" data-lang-key="nav_register">Register</a>
+      <a href="pickup.html" data-lang-key="nav_pickup">Pickup</a>
+      <a href="tutorials.html" data-lang-key="nav_tutorials">Tutorials</a>
+      <a href="rewards.html" data-lang-key="nav_rewards">Rewards</a>
+      <select id="language-switcher">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="sw">Kiswahili</option>
+      </select>
+    </nav>
+  </header>
+
+  <main>
+    <h2 data-lang-key="admin_login_title">Admin Login</h2>
+    <form id="adminLoginForm">
+      <input type="email" id="adminEmail" placeholder="Admin Email" required data-lang-key="admin_email_placeholder" />
+      <input type="password" id="adminPassword" placeholder="Password" required data-lang-key="login_password" />
+      <button type="submit" data-lang-key="login_button">Login</button>
+    </form>
+  </main>
+
+  <!-- Custom Message Modal -->
+  <div id="messageModal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="modal-close-button">&times;</span>
+      <h3 id="modalTitle"></h3>
+      <p id="modalMessage"></p>
+      <button onclick="document.getElementById('messageModal').style.display = 'none';" class="modal-button" data-lang-key="modal_button_ok">OK</button>
+    </div>
+  </div>
+
+  <script type="module" src="firebase-init.js"></script>
+  <script type="module">
+    // --- Multilingual Support Logic (copy from Index.html for consistency) ---
+    const translations = {
+      en: {
+        home_title: "Transformer Cycle Hub",
+        nav_home: "Home",
+        nav_login: "Login",
+        nav_register: "Register",
+        nav_pickup: "Pickup",
+        nav_tutorials: "Tutorials",
+        nav_rewards: "Rewards",
+        hero_heading: "Empowering Waste Reduction Through Innovation",
+        hero_tagline: "Join our community to recycle, upcycle, and earn points.",
+        logout_button: "Logout",
+        modal_success_title: "Success",
+        modal_error_title: "Error",
+        modal_login_required_title: "Login Required",
+        modal_button_ok: "OK",
+        login_title: "Login",
+        login_email_phone: "Email or Phone",
+        login_password: "Password",
+        login_button: "Login",
+        login_success: "Logged in successfully!",
+        login_failed_general: "Login failed: An unknown error occurred.",
+        login_invalid_email: "Invalid email address.",
+        login_user_disabled: "This user account has been disabled.",
+        login_user_not_found: "No user found with this email.",
+        login_wrong_password: "Incorrect password.",
+        registration_success: "Registration successful! You can now log in.",
+        registration_failed_general: "Registration failed: An unknown error occurred.",
+        registration_email_in_use: "The email address is already in use by another account.",
+        registration_invalid_email: "The email address is not valid.",
+        registration_weak_password: "The password is too weak. Please use at least 6 characters.",
+        pickup_request_submitted: "Pickup request submitted successfully!",
+        pickup_request_failed_general: "Failed to submit pickup request. Please try again.",
+        must_login_for_pickup: "You must be logged in to request a pickup.",
+        rewards_title_page: "Your Rewards",
+        rewards_available: "Available Rewards",
+        rewards_your_points: "Your Points",
+        rewards_not_logged_in: "N/A (Please login)",
+        rewards_login_to_view: "Please log in to see your personalized rewards and points.",
+        rewards_loading_points: "Loading points...",
+        rewards_error_loading: "Error loading points.",
+        rewards_no_rewards: "No rewards available at the moment.",
+        tutorials_title_page: "Recycling Tutorials",
+        error_loading_tutorials: "Failed to load tutorials.",
+        logout_success: "You have been logged out.",
+        logout_error: "Error logging out.",
+        admin_login_title: "Admin Login",
+        admin_email_placeholder: "Admin Email"
+      },
+      fr: {
+        home_title: "Centre de Cycle Transformateur",
+        nav_home: "Accueil",
+        nav_login: "Connexion",
+        nav_register: "S'inscrire",
+        nav_pickup: "Ramassage",
+        nav_tutorials: "Tutoriels",
+        nav_rewards: "Récompenses",
+        hero_heading: "Réduire les Déchets Grâce à l'Innovation",
+        hero_tagline: "Rejoignez notre communauté pour recycler, valoriser et gagner des points.",
+        logout_button: "Déconnexion",
+        modal_success_title: "Succès",
+        modal_error_title: "Erreur",
+        modal_login_required_title: "Connexion Requise",
+        modal_button_ok: "OK",
+        login_title: "Connexion",
+        login_email_phone: "E-mail ou Téléphone",
+        login_password: "Mot de passe",
+        login_button: "Se connecter",
+        login_success: "Connecté avec succès!",
+        login_failed_general: "Échec de la connexion : Une erreur inconnue s'est produite.",
+        login_invalid_email: "Adresse e-mail invalide.",
+        login_user_disabled: "Ce compte utilisateur a été désactivé.",
+        login_user_not_found: "Aucun utilisateur trouvé avec cet e-mail.",
+        login_wrong_password: "Mot de passe incorrect.",
+        registration_success: "Inscription réussie! Vous pouvez maintenant vous connecter.",
+        registration_failed_general: "Échec de l'inscription : Une erreur inconnue s'est produite.",
+        registration_email_in_use: "L'adresse e-mail est déjà utilisée par un autre compte.",
+        registration_invalid_email: "L'adresse e-mail n'est pas valide.",
+        registration_weak_password: "Le mot de passe est trop faible. Veuillez utiliser au moins 6 caractères.",
+        pickup_request_submitted: "Demande de ramassage soumise avec succès!",
+        pickup_request_failed_general: "Échec de la soumission de la demande de ramassage. Veuillez réessayer.",
+        must_login_for_pickup: "Vous devez être connecté pour demander un ramassage.",
+        rewards_title_page: "Vos Récompenses",
+        rewards_available: "Récompenses Disponibles",
+        rewards_your_points: "Vos Points",
+        rewards_not_logged_in: "N/A (Veuillez vous connecter)",
+        rewards_login_to_view: "Veuillez vous connecter pour voir vos récompenses et points personnalisés.",
+        rewards_loading_points: "Chargement des points...",
+        rewards_error_loading: "Erreur lors du chargement des points.",
+        rewards_no_rewards: "Aucune récompense disponible pour le moment.",
+        tutorials_title_page: "Tutoriels de Recyclage",
+        error_loading_tutorials: "Échec du chargement des tutoriels.",
+        logout_success: "Vous avez été déconnecté.",
+        logout_error: "Erreur lors de la déconnexion.",
+        admin_login_title: "Connexion Administrateur",
+        admin_email_placeholder: "E-mail Administrateur"
+      },
+      sw: {
+        home_title: "Kituo cha Transformer Cycle",
+        nav_home: "Nyumbani",
+        nav_login: "Ingia",
+        nav_register: "Jisajili",
+        nav_pickup: "Kuchukua",
+        nav_tutorials: "Mafunzo",
+        nav_rewards: "Zawadi",
+        hero_heading: "Kuimarisha Kupunguza Taka Kupitia Ubunifu",
+        hero_tagline: "Jiunge na jumuiya yetu ili kuchakata, kutumia tena, na kupata pointi.",
+        logout_button: "Toka",
+        modal_success_title: "Imefaulu",
+        modal_error_title: "Hitilafu",
+        modal_login_required_title: "Ingia Inahitajika",
+        modal_button_ok: "Sawa",
+        login_title: "Ingia",
+        login_email_phone: "Barua pepe au Nambari ya Simu",
+        login_password: "Nenosiri",
+        login_button: "Ingia",
+        login_success: "Umefaulu kuingia!",
+        login_failed_general: "Kuingia hakukufaulu: Hitilafu isiyojulikana imetokea.",
+        login_invalid_email: "Barua pepe si sahihi.",
+        login_user_disabled: "Akaunti hii ya mtumiaji imezimwa.",
+        login_user_not_found: "Hakuna mtumiaji aliyepatikana na barua pepe hii.",
+        login_wrong_password: "Nenosiri si sahihi.",
+        registration_success: "Usajili umefaulu! Sasa unaweza kuingia.",
+        registration_failed_general: "Usajili haukufaulu: Hitilafu isiyojulikana imetokea.",
+        registration_email_in_use: "Anwani ya barua pepe tayari inatumika na akaunti nyingine.",
+        registration_invalid_email: "Anwani ya barua pepe si sahihi.",
+        registration_weak_password: "Nenosiri ni dhaifu sana. Tafadhali tumia angalau herufi 6.",
+        pickup_request_submitted: "Ombi la kuchukua limewasilishwa kwa mafanikio!",
+        pickup_request_failed_general: "Imeshindwa kuwasilisha ombi la kuchukua. Tafadhali jaribu tena.",
+        must_login_for_pickup: "Lazima uingie ili kuomba kuchukua.",
+        rewards_title_page: "Zawadi Zako",
+        rewards_available: "Zawadi Zinazopatikana",
+        rewards_your_points: "Pointi Zako",
+        rewards_not_logged_in: "Haingii (Tafadhali ingia)",
+        rewards_login_to_view: "Tafadhali ingia ili uone zawadi na pointi zako binafsi.",
+        rewards_loading_points: "Inapakia pointi...",
+        rewards_error_loading: "Hitilafu wakati wa kupakia pointi.",
+        rewards_no_rewards: "Hakuna zawadi zinazopatikana kwa sasa.",
+        tutorials_title_page: "Mafunzo ya Urejelezaji",
+        error_loading_tutorials: "Imeshindwa kupakia mafunzo.",
+        logout_success: "Umetoka.",
+        logout_error: "Hitilafu wakati wa kutoka.",
+        admin_login_title: "Kuingia kwa Msimamizi",
+        admin_email_placeholder: "Barua pepe ya Msimamizi"
+      }
+    };
+
+    function setLanguage(lang) {
+      document.querySelectorAll('[data-lang-key]').forEach(element => {
+        const key = element.getAttribute('data-lang-key');
+        if (translations[lang] && translations[lang][key]) {
+          if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
+            element.setAttribute('placeholder', translations[lang][key]);
+          } else if (element.tagName === 'TITLE') {
+            document.title = translations[lang][key];
+          } else {
+            element.textContent = translations[lang][key];
+          }
+        }
+      });
+      const modalButton = document.querySelector('#messageModal .modal-button');
+      if (modalButton) {
+        modalButton.textContent = translations[lang]['modal_button_ok'] || 'OK';
+      }
+      localStorage.setItem('preferredLanguage', lang);
+    }
+
+    // Function to show custom message modal (overrides window.alert)
+    window.showMessage = function(titleKey, messageKey, isKey = true) {
+      const currentLang = localStorage.getItem('preferredLanguage') || 'en';
+      const title = isKey && translations[currentLang] && translations[currentLang][titleKey] ? translations[currentLang][titleKey] : titleKey;
+      const message = isKey && translations[currentLang] && translations[currentLang][messageKey] ? translations[currentLang][messageKey] : messageKey;
+
+      const modal = document.getElementById('messageModal');
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMessage').textContent = message;
+      modal.style.display = 'flex';
+    };
+
+    // Initialize language switcher and apply translations on page load
+    const storedLang = localStorage.getItem('preferredLanguage') || 'en';
+    document.addEventListener('DOMContentLoaded', () => {
+      const langSwitcher = document.getElementById('language-switcher');
+      if (langSwitcher) {
+        langSwitcher.value = storedLang;
+        langSwitcher.addEventListener('change', (event) => {
+          setLanguage(event.target.value);
+        });
+      }
+      setLanguage(storedLang); // Apply translations on load
+    });
+
+    // --- Page-specific JavaScript (Admin Login Logic) ---
+    import { auth, signInWithEmailAndPassword } from './firebase-init.js';
+
+    document.getElementById('adminLoginForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('adminEmail').value;
+      const password = document.getElementById('adminPassword').value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // For a real admin panel, you'd check user's custom claims here
+        // e.g., if (auth.currentUser.uid === 'YOUR_ADMIN_UID') { ... }
+        // Or if you set a custom claim: auth.currentUser.getIdTokenResult().then(idTokenResult => { if (idTokenResult.claims.admin) { ... } })
+
+        showMessage("modal_success_title", "login_success");
+        // Redirect to an admin dashboard
+        window.location.href = 'index.html'; // Or 'admin_dashboard.html'
+      } catch (error) {
+        console.error("Admin Login error:", error.code, error.message);
+        let errorMessageKey = "login_failed_general";
+        switch (error.code) {
+          case 'auth/invalid-email':
+            errorMessageKey = "login_invalid_email";
+            break;
+          case 'auth/user-disabled':
+            errorMessageKey = "login_user_disabled";
+            break;
+          case 'auth/user-not-found':
+            errorMessageKey = "login_user_not_found";
+            break;
+          case 'auth/wrong-password':
+            errorMessageKey = "login_wrong_password";
+            break;
+          default:
+            errorMessageKey = "login_failed_general";
+            break;
+        }
+        showMessage("modal_error_title", errorMessageKey);
+      }
+    };
+  </script>
+</body>
+</html>

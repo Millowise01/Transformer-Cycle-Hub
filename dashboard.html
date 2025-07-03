@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Transformer Cycle Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">Transformer Cycle Hub</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pickup.html">Schedule Pickup</a></li>
+                <li><a href="tutorials.html">Upcycling Tutorials</a></li>
+                <li><a href="rewards.html">Rewards</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+            <div id="message" class="message"></div>
+            <h1 id="welcomeMessage">Welcome to Your Dashboard, User!</h1>
+            <p id="greenPointsDisplay">Your Green Points: 0</p>
+            <div id="message" class="message"></div>
+        </div>
+
+        <section class="dashboard-grid">
+            <div class="card">
+                <h3>Scheduled Pickups</h3>
+                <p>Total pickups scheduled:</p>
+                <p class="metric-value" id="pickupCount">0</p>
+                <a href="pickup.html" class="btn">Schedule New Pickup</a>
+            </div>
+
+            <div class="card">
+                <h3>Tutorials Completed</h3>
+                <p>Upcycling tutorials you've finished:</p>
+                <p class="metric-value" id="tutorialCount">0</p>
+                <a href="tutorials.html" class="btn">Explore Tutorials</a>
+            </div>
+
+            <div class="card">
+                <ul class="activity-list activity-list-mt">
+                    <li>
+                        <p>Waste recycled:</p>
+                        <p class="metric-value" id="wasteRecycled">0 kg</p>
+                        <ul class="activity-list activity-list-mt">
+                            <li>Plastic: <strong id="plasticRecycled">0 kg</strong></li>
+                            <li>E-waste: <strong id="ewasteRecycled">0 kg</strong></li>
+                            <li>Bottles: <strong id="bottlesRecycled">0 kg</strong></li>
+                        </ul>
+                        <p class="thank-you-message">Thank you for helping us build a greener Africa!</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Recent Activities</h3>
+                <ul id="recentActivitiesList" class="activity-list">
+                    <li class="activity-item">No recent activities.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Transformer Cycle Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Dashboard-specific script
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.checkLoginStatus()) {
+                window.location.href = 'login.html'; // Redirect to login if not logged in
+                return;
+            }
+
+            const userEmail = window.getUserEmail();
+            document.getElementById('welcomeMessage').textContent = `Welcome to Your Dashboard, ${userEmail || 'User'}!`;
+
+            // Update green points display
+            window.updateGreenPointsDisplay();
+
+            // Load and display dashboard metrics
+            function loadDashboardMetrics() {
+                const pickupCount = localStorage.getItem('pickupCount') ? parseInt(localStorage.getItem('pickupCount')) : 0;
+                const tutorialCount = localStorage.getItem('tutorialCount') ? parseInt(localStorage.getItem('tutorialCount')) : 0;
+                const wasteRecycled = localStorage.getItem('wasteRecycled') ? parseFloat(localStorage.getItem('wasteRecycled')) : 0;
+                const plasticRecycled = localStorage.getItem('totalPlasticRecycled') ? parseFloat(localStorage.getItem('totalPlasticRecycled')) : 0;
+                const ewasteRecycled = localStorage.getItem('totalEwasteRecycled') ? parseFloat(localStorage.getItem('totalEwasteRecycled')) : 0;
+                const bottlesRecycled = localStorage.getItem('totalBottlesRecycled') ? parseFloat(localStorage.getItem('totalBottlesRecycled')) : 0;
+                const recentActivities = localStorage.getItem('recentActivities') ? JSON.parse(localStorage.getItem('recentActivities')) : [];
+
+                document.getElementById('pickupCount').textContent = pickupCount;
+                document.getElementById('tutorialCount').textContent = tutorialCount;
+                document.getElementById('wasteRecycled').textContent = `${wasteRecycled.toFixed(1)} kg`;
+                document.getElementById('plasticRecycled').textContent = `${plasticRecycled.toFixed(1)} kg`;
+                document.getElementById('ewasteRecycled').textContent = `${ewasteRecycled.toFixed(1)} kg`;
+                document.getElementById('bottlesRecycled').textContent = `${bottlesRecycled.toFixed(1)} kg`;
+
+                const recentActivitiesList = document.getElementById('recentActivitiesList');
+                recentActivitiesList.innerHTML = ''; // Clear existing list
+
+                if (recentActivities.length === 0) {
+                    recentActivitiesList.innerHTML = '<li class="activity-item">No recent activities.</li>';
+                } else {
+                    // Display up to 5 most recent activities
+                    recentActivities.slice(-5).reverse().forEach(activity => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'activity-item';
+                        listItem.textContent = `${activity.date}: ${activity.description}`;
+                        recentActivitiesList.appendChild(listItem);
+                    });
+                }
+            }
+
+            loadDashboardMetrics(); // Call on page load
+        });
+    </script>
+</body>
+</html>

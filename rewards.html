@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Rewards & Leaderboard - Transformer Cycle Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">Transformer Cycle Hub</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="pickup.html">Schedule Pickup</a></li>
+                <li><a href="tutorials.html">Upcycling Tutorials</a></li>
+                <li><a href="rewards.html">Rewards</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <h1>Your Green Rewards</h1>
+            <p>Accumulate Green Points by participating in eco-friendly activities and redeem them for exciting rewards!</p>
+        </div>
+
+        <div class="points-display">
+            <span id="greenPointsDisplay">Your Green Points: 0</span>
+        </div>
+
+        <div class="rewards-grid">
+            <div class="reward-item" data-reward-points="100">
+                <h3>Eco-Friendly Water Bottle</h3>
+                <p>Stay hydrated with a reusable, sustainable water bottle.</p>
+                <div class="points-needed">100 Green Points</div>
+                <button class="redeem-reward">Redeem Now</button>
+            </div>
+
+            <div class="reward-item" data-reward-points="250">
+                <h3>Digital E-Book Voucher</h3>
+                <p>A voucher for popular e-books from various categories. No paper, no waste!</p>
+                <div class="points-needed">250 Green Points</div>
+                <button class="redeem-reward">Redeem Now</button>
+            </div>
+
+            <div class="reward-item" data-reward-points="500">
+                <h3>Local Organic Produce Box</h3>
+                <p>Support local farmers and enjoy fresh, organic produce delivered to your door.</p>
+                <div class="points-needed">500 Green Points</div>
+                <button class="redeem-reward">Redeem Now</button>
+            </div>
+
+            <div class="reward-item" data-reward-points="1000">
+                <h3>Tree Planting Donation</h3>
+                <p>Redeem your points to plant a tree in your name, contributing to reforestation efforts.</p>
+                <div class="points-needed">1000 Green Points</div>
+                <button class="redeem-reward">Redeem Now</button>
+            </div>
+
+        <section class="card leaderboard-section">
+        <div id="message" class="message"></div>
+
+        <section class="card leaderboard-margin">
+            <h2>Green Heroes Leaderboard</h2>
+            <p>See who's making the biggest impact in our community!</p>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>User</th>
+                        <th>Green Points</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Transformer Cycle Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Specific logic for rewards.html (now combined with leaderboard)
+        document.addEventListener('DOMContentLoaded', () => {
+            window.updateGreenPointsDisplay(); // Update points on page load
+
+            const redeemButtons = document.querySelectorAll('.redeem-reward');
+            const messageDiv = document.getElementById('message');
+
+            function checkRedeemable() {
+                redeemButtons.forEach(button => {
+                    const rewardItem = button.closest('.reward-item');
+                    const pointsNeeded = parseInt(rewardItem.dataset.rewardPoints);
+                    if (window.userGreenPoints >= pointsNeeded) {
+                        button.removeAttribute('disabled');
+                        button.textContent = 'Redeem Now';
+                    } else {
+                        button.setAttribute('disabled', 'disabled');
+                        button.textContent = `Need ${pointsNeeded - window.userGreenPoints} more points`;
+                    }
+                });
+            }
+
+            // Initial check
+            checkRedeemable();
+
+            // Re-check whenever points might change (e.g., from other pages via local storage)
+            window.addEventListener('storage', () => {
+                window.userGreenPoints = localStorage.getItem('userGreenPoints') ? parseInt(localStorage.getItem('userGreenPoints')) : 0;
+                window.updateGreenPointsDisplay();
+                checkRedeemable();
+                renderLeaderboard(); // Re-render leaderboard if points change
+            });
+
+
+            redeemButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const rewardItem = event.target.closest('.reward-item');
+                    const pointsNeeded = parseInt(rewardItem.dataset.rewardPoints);
+                    const rewardName = rewardItem.querySelector('h3').textContent;
+
+                    if (window.redeemGreenPoints(pointsNeeded)) {
+                        window.displayMessage(`Successfully redeemed "${rewardName}" for ${pointsNeeded} points!`, 'success', 'message');
+                        console.log(`User redeemed ${rewardName}. Remaining points: ${window.userGreenPoints}`);
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate processing
+                        checkRedeemable(); // Update button states
+                        renderLeaderboard(); // Update leaderboard after redemption
+                    } else {
+                        window.displayMessage(`Not enough points to redeem "${rewardName}". You need ${pointsNeeded - window.userGreenPoints} more.`, 'error', 'message');
+                    }
+                });
+            });
+
+            // Leaderboard rendering logic
+            function renderLeaderboard() {
+                const leaderboardData = [
+                    { name: "Jane", points: 1250 },
+                    { name: "Ben", points: 1100 },
+                    { name: "Anna", points: 980 },
+                    { name: "Tom", points: 850 },
+                    { name: "Kim", points: 720 },
+                    { name: "Sam", points: 600 },
+                    { name: "Chris", points: 480 },
+                    { name: "Rachael", points: 350 },
+                    { name: "Millo", points: 220 },
+                    { name: "Noah", points: 100 }
+                ];
+
+                // Add current user to leaderboard data if logged in and not already there
+                const currentUserEmail = window.getUserEmail();
+                if (window.checkLoginStatus() && currentUserEmail) {
+                    const currentUserName = currentUserEmail.split('@')[0];
+                    const currentUserPoints = window.userGreenPoints;
+
+                    const existingUserIndex = leaderboardData.findIndex(user => user.name.toLowerCase() === currentUserName.toLowerCase());
+
+                    if (existingUserIndex !== -1) {
+                        if (currentUserPoints > leaderboardData[existingUserIndex].points) {
+                            leaderboardData[existingUserIndex].points = currentUserPoints;
+                        }
+                    } else if (currentUserPoints > 0) {
+                        leaderboardData.push({ name: currentUserName, points: currentUserPoints });
+                    }
+                }
+
+                // Sort data by points in descending order
+                leaderboardData.sort((a, b) => b.points - a.points);
+
+                const leaderboardBody = document.getElementById('leaderboardBody');
+                leaderboardBody.innerHTML = ''; // Clear existing content
+
+                leaderboardData.forEach((user, index) => {
+                    const row = leaderboardBody.insertRow();
+                    const rankCell = row.insertCell(0);
+                    const userCell = row.insertCell(1);
+                    const pointsCell = row.insertCell(2);
+
+                    rankCell.textContent = index + 1;
+                    userCell.textContent = user.name;
+                    pointsCell.textContent = user.points;
+
+                    rankCell.setAttribute('data-label', 'Rank');
+                    userCell.setAttribute('data-label', 'User');
+                    pointsCell.setAttribute('data-label', 'Green Points');
+
+                    if (window.checkLoginStatus() && user.name.toLowerCase() === window.getUserEmail().split('@')[0].toLowerCase()) {
+                        row.style.backgroundColor = '#e6ffee';
+                        row.style.fontWeight = 'bold';
+                    }
+                });
+            }
+
+            renderLeaderboard(); // Initial render of the leaderboard
+        });
+    </script>
+</body>
+</html>

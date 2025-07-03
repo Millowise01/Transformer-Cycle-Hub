@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Transformer Cycle Hub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Transformer Cycle Hub</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+      <a href="pickup.html">Pickup</a>
+      <a href="tutorials.html">Tutorials</a>
+      <a href="rewards.html">Rewards</a>
+      <a href="map.html">Map</a>
+      <a href="sorting_guide.html">Sorting Guide</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+  </main>
+
+  <!-- Custom Message Modal (from previous step) -->
+  <div id="messageModal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="modal-close-button">&times;</span>
+      <h3 id="modalTitle"></h3>
+      <p id="modalMessage"></p>
+      <button onclick="document.getElementById('messageModal').style.display = 'none';" class="modal-button">OK</button>
+    </div>
+  </div>
+
+  <script type="module" src="firebase-init.js"></script> <!-- Added Firebase Init -->
+  <script type="module">
+    // Function to show custom message modal (from previous step)
+    function showMessage(title, message) {
+      const modal = document.getElementById('messageModal');
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMessage').textContent = message;
+      modal.style.display = 'flex'; // Use flex to center
+    }
+
+    document.querySelector('.modal-close-button').onclick = function() {
+      document.getElementById('messageModal').style.display = 'none';
+    }
+
+    document.querySelector('.modal-button').onclick = function() {
+      document.getElementById('messageModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('messageModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    window.alert = showMessage; // Replaced alert with custom modal
+
+    // Page-specific JavaScript (Login Logic)
+    import { auth, signInWithEmailAndPassword } from './firebase-init.js'; // Import auth and signInWithEmailAndPassword
+
+    document.getElementById('loginForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showMessage("Success", "Logged in successfully!");
+        // Redirect to a dashboard or home page after successful login
+        window.location.href = 'index.html'; // Or a user dashboard
+      } catch (error) {
+        console.error("Login error:", error.code, error.message);
+        let errorMessage = "An unknown error occurred.";
+        switch (error.code) {
+          case 'auth/invalid-email':
+            errorMessage = "Invalid email address.";
+            break;
+          case 'auth/user-disabled':
+            errorMessage = "This user account has been disabled.";
+            break;
+          case 'auth/user-not-found':
+            errorMessage = "No user found with this email.";
+            break;
+          case 'auth/wrong-password':
+            errorMessage = "Incorrect password.";
+            break;
+          default:
+            errorMessage = "Login failed: " + error.message;
+        }
+        showMessage("Login Failed", errorMessage);
+      }
+    };
+  </script>
+</body>
+</html>

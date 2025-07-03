@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register - Transformer Cycle Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">Transformer Cycle Hub</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pickup.html">Schedule Pickup</a></li>
+                <li><a href="tutorials.html">Upcycling Tutorials</a></li>
+                <li><a href="rewards.html">Rewards</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-form="login">Login</div>
+                <div class="auth-tab" data-form="register">Register</div>
+            </div>
+
+            <div id="loginForm" class="auth-form active">
+                <h2>Login to Your Account</h2>
+                <form id="loginAuthForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+
+            <div id="registerForm" class="auth-form">
+                <h2>Create an Account</h2>
+                <form id="registerAuthForm">
+                    <div class="form-group">
+                        <label for="registerEmail">Email:</label>
+                        <input type="email" id="registerEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password:</label>
+                        <input type="password" id="registerPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+            <div id="authMessage" class="message"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Transformer Cycle Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Specific logic for combined login/register page
+        document.addEventListener('DOMContentLoaded', () => {
+            const authTabs = document.querySelectorAll('.auth-tab');
+            const authForms = document.querySelectorAll('.auth-form');
+            const authMessageDiv = document.getElementById('authMessage');
+
+            // Function to switch tabs
+            function switchAuthTab(targetFormId) {
+                authTabs.forEach(tab => {
+                    if (tab.dataset.form === targetFormId) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+
+                authForms.forEach(form => {
+                    if (form.id === targetFormId + 'Form') {
+                        form.classList.add('active');
+                    } else {
+                        form.classList.remove('active');
+                    }
+                });
+                authMessageDiv.style.display = 'none'; // Hide message on tab switch
+            }
+
+            // Add event listeners to tabs
+            authTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchAuthTab(tab.dataset.form);
+                });
+            });
+
+            // Handle Login Form Submission
+            const loginAuthForm = document.getElementById('loginAuthForm');
+            loginAuthForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                if (!email || !password) {
+                    window.displayMessage('Please enter both email and password.', 'error', 'authMessage');
+                    return;
+                }
+
+                window.displayMessage('Logging in...', 'info', 'authMessage');
+
+                // Simulate login API call (in a real app, this verifies credentials with backend)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Simple client-side demo logic: always "succeed" for any input
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                window.displayMessage('Login successful! Redirecting to dashboard...', 'success', 'authMessage');
+
+                // Simulate setting some initial points if new user, or retrieving from backend
+                if (!localStorage.getItem('userGreenPoints')) {
+                    localStorage.setItem('userGreenPoints', 0);
+                }
+
+                // Simulate initial dashboard stats
+                if (!localStorage.getItem('pickupCount')) localStorage.setItem('pickupCount', 0);
+                if (!localStorage.getItem('tutorialCount')) localStorage.setItem('tutorialCount', 0);
+                if (!localStorage.getItem('wasteRecycled')) localStorage.setItem('wasteRecycled', 0);
+                if (!localStorage.getItem('recentActivities')) localStorage.setItem('recentActivities', JSON.stringify([]));
+
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html'; // Redirect to dashboard
+                }, 1000);
+            });
+
+            // Handle Register Form Submission
+            const registerAuthForm = document.getElementById('registerAuthForm');
+            registerAuthForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (!email || !password || !confirmPassword) {
+                    window.displayMessage('Please fill in all fields.', 'error', 'authMessage');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    window.displayMessage('Passwords do not match.', 'error', 'authMessage');
+                    return;
+                }
+
+                window.displayMessage('Registering your account...', 'info', 'authMessage');
+
+                // Simulate registration API call (in a real app, this registers user with backend)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Simple client-side demo logic: always "succeed"
+                // In a real app, you would then auto-login or prompt login
+                localStorage.setItem('isLoggedIn', 'true'); // Auto-login after registration for demo
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userGreenPoints', 0); // New user starts with 0 points
+                localStorage.setItem('pickupCount', 0);
+                localStorage.setItem('tutorialCount', 0);
+                localStorage.setItem('wasteRecycled', 0);
+                localStorage.setItem('recentActivities', JSON.stringify([]));
+
+                window.displayMessage('Registration successful! Welcome, you are now logged in. Redirecting to dashboard...', 'success', 'authMessage');
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html'; // Redirect to dashboard
+                }, 1000);
+            });
+
+            // Check URL for hash to pre-select tab (e.g., login.html#register)
+            if (window.location.hash === '#register') {
+                switchAuthTab('register');
+            } else {
+                switchAuthTab('login'); // Default to login tab
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcycling Tutorials - Transformer Cycle Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">Transformer Cycle Hub</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="pickup.html">Schedule Pickup</a></li>
+                <li><a href="tutorials.html">Upcycling Tutorials</a></li>
+                <li><a href="rewards.html">Rewards</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <h1>Upcycling Education</h1>
+            <p>Learn how to transform waste into valuable products through our tutorials. Each completed tutorial earns you 10 Green Points.</p>
+        </div>
+
+        <div class="tutorial-list">
+            <div class="tutorial-item">
+                <img src="download (10).jpg" alt="Plastic Bottle Tutorial">
+                <div class="tutorial-content">
+                    <h3>DIY Plastic Bottle</h3>
+                    <p>Transform old plastic bottles into beautiful and functional plant pots for your home or garden.</p>
+                    <div class="tutorial-actions">
+                        <a href="https://youtu.be/sBvL0Ss-pT4?si=5XKjbWdb24IHzzxE" class="btn view-tutorial" data-tutorial-id="1" target="_blank" rel="noopener">View Tutorial</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutorial-item">
+                <img src="inspiration.jpg" alt="E-Waste Art Tutorial">
+                <div class="tutorial-content">
+                    <h3>Creative E-Waste Art</h3>
+                    <p>Discover how to create unique art pieces from discarded electronic components and circuit boards.</p>
+                    <div class="tutorial-actions">
+                        <a href="https://youtu.be/v8JJCbfIlws?si=5_QkpfyG6vqT4eiy" class="btn view-tutorial" data-tutorial-id="2" target="_blank" rel="noopener">View Tutorial</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutorial-item">
+                <img src="bag.jpg" alt="Denim Bag Tutorial">
+                <div class="tutorial-content">
+                    <h3>Upcycled Denim Tote Bag</h3>
+                    <p>Turn old jeans into stylish and durable tote bags. Perfect for shopping or everyday use.</p>
+                    <div class="tutorial-actions">
+                        <a href="https://youtu.be/Nulpilk4WYw?si=0_8mjAvuHeySgIyw" class="btn view-tutorial" data-tutorial-id="3" target="_blank" rel="noopener">View Tutorial</a>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Transformer Cycle Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Specific logic for tutorials.html
+        document.addEventListener('DOMContentLoaded', () => {
+            const tutorialButtons = document.querySelectorAll('.view-tutorial');
+            tutorialButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    // Prevent default behavior only if you intend to handle the navigation
+                    // yourself, otherwise the href will handle it.
+                    // event.preventDefault(); 
+                    const tutorialId = event.target.dataset.tutorialId;
+                    console.log(`Viewing tutorial ${tutorialId}`);
+                    // window.displayMessage(`You completed Tutorial #${tutorialId} and earned 10 Green Points!`, 'success');
+                    // window.addGreenPoints(10); // Add 10 points for completing a tutorial
+                    // In a real app, this would redirect to a detailed tutorial page
+                    // or open a video player, and point earning would be backend-verified.
+                });
+            });
+        });
+    </script>
+</body>
+</html>

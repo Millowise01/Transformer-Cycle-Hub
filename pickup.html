@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Pickup & Sorting Guide - Transformer Cycle Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">Transformer Cycle Hub</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="pickup.html">Schedule Pickup</a></li>
+                <li><a href="tutorials.html">Upcycling Tutorials</a></li>
+                <li><a href="rewards.html">Rewards</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <h1>Schedule Your Waste Pickup</h1>
+            <p>Fill out the form below to request a waste pickup. Earn Green Points for every successful collection!</p>
+            <form id="pickupForm">
+                <div class="form-group">
+                    <label for="wasteType">Type of Waste:</label>
+                    <select id="wasteType" name="wasteType" required>
+                        <option value="">Select Waste Type</option>
+                        <option value="plastic">Plastic Waste</option>
+                        <option value="ewaste">Electronic Waste</option>
+                        <option value="bottles">Bottle Waste (Glass/Metal)</option>
+                        <option value="paper">Paper & Cardboard</option>
+                        <option value="organic">Organic Waste</option>
+                        <option value="mixed">Mixed Recyclables</option>
+                    </select>
+                    <p id="locationDisplay"></p>
+
+                <div class="form-group">
+                    <label for="pickupLocation">Pickup Location:</label>
+                    <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Enter your address or use current location" required>
+                    <button type="button" class="btn btn-secondary location-margin" id="getLocationBtn">Get Current Location</button>
+                    <p id="locationDisplay"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="pickupDate">Preferred Date:</label>
+                    <input type="date" id="pickupDate" name="pickupDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pickupTime">Preferred Time Slot:</label>
+                    <select id="pickupTime" name="pickupTime" required>
+                        <option value="">Select Time</option>
+                        <option value="morning">Morning (9 AM - 12 PM)</option>
+                        <option value="afternoon">Afternoon (1 PM - 4 PM)</option>
+                        <option value="evening">Evening (5 PM - 8 PM)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Additional Notes (Optional):</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="e.g., Waste is in blue bags near the gate"></textarea>
+                </div>
+
+                <button type="submit">Submit Pickup Request</button>
+            </form>
+            <div id="message" class="message"></div>
+        </div>
+
+        <section class="card sorting-section">
+            <h2>Waste Sorting Guide</h2>
+            <p>Learn how to properly sort your waste to maximize recycling and minimize environmental impact. Each correct sort contributes to a cleaner Africa!</p>
+
+            <details>
+                <summary>Plastic Waste (PET, HDPE)</summary>
+                <div class="sorting-content">
+                    <p>Plastics are incredibly versatile but require proper sorting. Look for the recycling symbol with a number (1-7).</p>
+                    <ul>
+                        <li><strong>Recyclable:</strong> PET bottles (water, soda), HDPE containers (milk jugs, detergent bottles), plastic food containers (yogurt, butter).</li>
+                        <li><strong>Preparation:</strong> Rinse thoroughly, remove caps (check local guidelines if caps are recyclable), flatten to save space.</li>
+                        <li><strong>Not Recyclable:</strong> Plastic bags, plastic film, Styrofoam, broken plastic toys, unnumbered plastics, composite materials.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>Electronic Waste (E-Waste)</summary>
+                <div class="sorting-content">
+                    <p>E-waste contains valuable materials and hazardous substances. Do NOT put in regular trash.</p>
+                    <ul>
+                        <li><strong>Recyclable:</strong> Old phones, laptops, tablets, chargers, batteries, small appliances (toasters, kettles), wires.</li>
+                        <li><strong>Preparation:</strong> Remove batteries if possible (recycle separately), wipe data from devices.</li>
+                        <li><strong>Disposal:</strong> Drop off at designated e-waste collection points or schedule a special pickup.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>Bottle Waste (Glass & Metal)</summary>
+                <div class="sorting-content">
+                    <p>Glass and metal bottles/cans are highly recyclable and can be recycled infinitely without losing quality.</p>
+                    <ul>
+                        <li><strong>Glass:</strong> Beverage bottles (beer, soda), food jars (jam, pickles). Separate by color if required by local facility (clear, brown, green).</li>
+                        <li><strong>Metal:</strong> Aluminum cans (soda, beer), steel/tin cans (food cans), aluminum foil (clean).</li>
+                        <li><strong>Preparation:</strong> Rinse thoroughly. Labels can usually stay on.</li>
+                        <li><strong>Not Recyclable (Glass):</strong> Ceramics, pottery, drinking glasses, window glass, mirrors, light bulbs.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>Paper & Cardboard</summary>
+                <div class="sorting-content">
+                    <p>Paper products are common household waste that can be easily recycled.</p>
+                    <ul>
+                        <li><strong>Recyclable:</strong> Newspapers, magazines, cardboard boxes (flattened), office paper, junk mail, paper bags.</li>
+                        <li><strong>Preparation:</strong> Keep dry and clean. Remove any plastic windows from envelopes.</li>
+                        <li><strong>Not Recyclable:</strong> Greasy pizza boxes, paper towels, tissues, waxed paper, photos, shredded paper (check local rules).</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>Organic Waste</summary>
+                <div class="sorting-content">
+                    <p>Organic waste (food scraps, yard waste) can be composted to create nutrient-rich soil.</p>
+                    <ul>
+                        <li><strong>Compostable:</strong> Fruit and vegetable scraps, coffee grounds, tea bags, eggshells, yard trimmings (leaves, grass clippings).</li>
+                        <li><strong>Preparation:</strong> Collect in a separate bin. Avoid meat, dairy, and oily foods for home composting.</li>
+                        <li><strong>Disposal:</strong> Use a home composting bin or utilize community composting programs.</li>
+                    </ul>
+                </details>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Transformer Cycle Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // ... (existing pickup.html DOMContentLoaded logic) ...
+
+        const pickupForm = document.getElementById('pickupForm');
+        const pickupMessageDiv = document.getElementById('pickupMessage');
+
+        pickupForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const wasteType = document.getElementById('wasteType').value;
+            const quantity = document.getElementById('quantity').value;
+            const pickupDate = document.getElementById('pickupDate').value;
+            const pickupTime = document.getElementById('pickupTime').value;
+            const pickupLocation = document.getElementById('pickupLocation').value;
+
+            if (!wasteType || !quantity || !pickupDate || !pickupTime || !pickupLocation) {
+                window.displayMessage('Please fill in all fields.', 'error', 'pickupMessage');
+                return;
+            }
+
+            window.displayMessage('Scheduling your pickup...', 'info', 'pickupMessage');
+
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Simulate successful pickup
+            let currentPickupCount = localStorage.getItem('pickupCount') ? parseInt(localStorage.getItem('pickupCount')) : 0;
+            currentPickupCount++;
+            localStorage.setItem('pickupCount', currentPickupCount);
+
+            // Add green points for pickup (e.g., 15 points per pickup)
+            window.addGreenPoints(15);
+
+            // --- NEW: Update waste recycled amounts ---
+            let recycledAmountKg = 0;
+            if (wasteType === 'plastic') {
+                recycledAmountKg = parseFloat(quantity) * 0.5; // Example: 0.5 kg per item/unit of plastic
+                window.updateWasteRecycled('plastic', recycledAmountKg);
+            } else if (wasteType === 'e-waste') {
+                recycledAmountKg = parseFloat(quantity) * 2.0; // Example: 2.0 kg per item/unit of e-waste
+                window.updateWasteRecycled('e-waste', recycledAmountKg);
+            } else if (wasteType === 'bottles') {
+                recycledAmountKg = parseFloat(quantity) * 0.1; // Example: 0.1 kg per bottle
+                window.updateWasteRecycled('bottles', recycledAmountKg);
+            }
+            // --- END NEW ---
+
+            // --- NEW: Add activity to log ---
+            window.addActivity(`Scheduled a ${wasteType} pickup for ${recycledAmountKg.toFixed(1)} kg. Earned 15 points.`);
+            // --- END NEW ---
+
+            window.displayMessage('Pickup scheduled successfully! You earned 15 green points.', 'success', 'pickupMessage');
+            pickupForm.reset();
+            document.getElementById('locationDisplay').textContent = ''; // Clear location display
+        });
+        });
+    </script>
+</body>
+</html>
